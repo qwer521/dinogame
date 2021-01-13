@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
+    <title>dinoLV4</title>
+
+</head>
+
+<body>
+    <canvas id="stage"></canvas>
+    <script>
+        var docCookies = {
+            getItem: function (sKey) {
+                return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+            },
+            setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+                if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+                var sExpires = "";
+                if (vEnd) {
+                    switch (vEnd.constructor) {
+                        case Number:
+                            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                            break;
+                        case String:
+                            sExpires = "; expires=" + vEnd;
+                            break;
+                        case Date:
+                            sExpires = "; expires=" + vEnd.toUTCString();
+                            break;
+                    }
+                }
+                document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+                return true;
+            },
+        };
+        var Game = Engine('stage');
+        Game.set({
+            width: innerWidth, // Default: 640px
+            height: innerHeight, // Default: 480px
+            debugMode: true, // Default: false
+            precision: 1
+        });
+        Game.preload([
+        ], function () {
+            Game.start();
+            document.getElementById('stage').focus();
+        });
+        Game.setBackdrop("asset/background.png");
+
+        var s = 0;
+        var down=200;
+
+        var realground = Game.createSprite("asset/realground.png");
+        realground.x = 0;
+        realground.y = 320+down;
+
+        var platform1 = Game.createSprite("asset/ground.png");
+        platform1.x = 0;
+        platform1.y = 300+down;
+        var platform2 = Game.createSprite("asset/ground.png");
+        platform2.x = 2400;
+        platform2.y = 300+down;
+        var platform3 = Game.createSprite("asset/ground.png");
+        platform3.x = 4800;
+        platform3.y = 300+down;
+        var dino = Game.createSprite(["asset/dino1.png", "asset/dino2.png", "asset/dino3.png", "asset/dino4.png"])
+        dino.x = 60;
+        dinoxv=0;
+        dino.y = 270+down;
+        dino.v = 10;
+        var num1 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num2 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num3 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num4 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num5 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        num1.x = innerWidth + 20, num1.y = 130;
+        num2.x = innerWidth, num2.y = 130;
+        num3.x = innerWidth - 20, num3.y = 130;
+        num4.x = innerWidth - 40, num4.y = 130;
+        num5.x = innerWidth - 60, num5.y = 130;
+        var LV= Game.createSprite("num4.png")
+        LV.x=innerWidth - 180,LV.y=130;
+        var hi = Game.createSprite("LV.png")
+        hi.x = innerWidth - 360, hi.y = 92;
+        
+        
+
+        var score;
+        setInterval(function () {
+            if (!s) {
+                score += 1;
+                cscore = score;
+                num1.costumeId = cscore % 10;
+                cscore -= num1.costumeId;
+                num2.costumeId = (cscore % 100) / 10;
+                cscore -= num2.costumeId * 10;
+                num3.costumeId = (cscore % 1000) / 100;
+                cscore -= num3.costumeId * 100;
+                num4.costumeId = (cscore % 10000) / 1000;
+                cscore -= num4.costumeId * 1000;
+                num5.costumeId = cscore / 10000;
+            }
+        }, 100);
+
+        var cacs = [];
+        cacs[0] = Game.createSprite("w-bl-cac1.png");
+        cacs[0].x = -1000, cacs[0].y = 215+down,cacs[0].scale=0.4;
+        cacs[1] = Game.createSprite("w-bl-cac2.png");
+        cacs[1].x = -1000, cacs[1].y = 215+down,cacs[1].scale=0.35;
+        cacs[2] = Game.createSprite("b-cac3.png");
+        cacs[2].x = -1000, cacs[2].y = 270+down;
+        cacs[3] = Game.createSprite("w-sml-cac1.png");
+        cacs[3].x = -1000, cacs[3].y = 215+down,cacs[3].scale=0.35;
+        cacs[4] = Game.createSprite("sm-cac2.png");
+        cacs[4].x = -1000, cacs[4].y = 270+down;
+        cacs[5] = Game.createSprite("sm-cac3.png");
+        cacs[5].x = -1000, cacs[5].y = 270+down;
+        cacs[6] = Game.createSprite("bl-cac1.png");
+        cacs[6].x = -1000, cacs[6].y = 215+down;
+        cacs[7] = Game.createSprite("bl-cac2.png");
+        cacs[7].x = -1000, cacs[7].y = 215+down;
+        cacs[8] = Game.createSprite("b-cac1.png");
+        cacs[8].x = 2000, cacs[8].y = 270+down;
+        cacs[9] = Game.createSprite("b-cac2.png");
+        cacs[9].x = -1000, cacs[9].y = 270+down;
+        cacs[10] = Game.createSprite("sml-cac1.png");
+        cacs[10].x = -1000, cacs[10].y = 215+down;
+        var cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
+        var gg = Game.createSprite("GG.png");
+        gg.x = -100, gg.y = -100;
+        var re = Game.createSprite("reset.png");
+        re.x = -100, re.y = -100;
+ 
+
+        var g = 0, speed = 0, len = 1900, s = 1,jump=0,extlen;
+
+        Game.forever(function () {
+            if (!g && !s) {
+                dino.costumeId = 0;
+                dino.v += 1.6;
+                dino.y += dino.v;
+            }
+            else if (!s) {
+                dino.y = 260+down ;
+            }
+            if (score == 100&&!s) speed = 16;
+            else if (score == 200&&!s) speed = 17;
+            else if (score == 300&&!s) speed = 18;
+            else if (score == 400&&!s) speed = 19;
+            else if (score == 500&&!s) ;
+            platform3.x -= speed;
+            platform2.x -= speed;
+            platform1.x -= speed;
+           
+            for (var i = 0; i <11; i++) {
+                cacs[i].x -= speed;
+                if (cacin[i] && cacs[i].x < 1300) {
+                    cacin[i] = 0;
+                    var ran = Math.floor(Math.random() * 11);
+                    while (cacs[ran].x < 1300 && cacs[ran].x >= -100) {
+                        if (ran != 10) ran++;
+                        else ran = 0;
+                    }
+                    if(ran==1||ran==0||ran==3){
+                        extlen=400;
+                    }
+                    else{
+                        extlen=0;
+                    }
+                    cacs[ran].x = (Math.floor(Math.random() * 7)) * 100 + len+extlen;
+                    cacin[ran] = 1;
+                }
+            }
+            if (platform1.x <= -2300) {
+                platform1.x = 4800;
+            }
+            if (platform2.x <= -2300) {
+                platform2.x = 4800;
+            }
+            if (platform3.x <= -2300) {
+                platform3.x = 4800;
+            }
+            
+            if (dino.touched(cacs)) {
+                dino.costumeId = 3;
+                gg.x = innerWidth / 2, gg.y = 160;
+                re.x = innerWidth / 2, re.y = 230;
+                speed = 0;
+                s = 1;
+            }
+            if(!g)
+                if(dino.touched(realground)){
+                    g=true;
+                    dino.y = 260+down ;
+                    jump=0;
+                }
+        })
+       
+        
+        dino.costumeId = 1;
+        setInterval(function () {
+            if (s) {
+                dino.costumeId = 0;
+            }
+            else if (dino.costumeId == 1) {
+                dino.costumeId = 2;
+            }
+            else {
+                dino.costumeId = 1;
+            }
+        }, 90);
+        var flag = 0;
+        Game.when("keydown", "space", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "up", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "down", function () {
+            if (!g && !s) {
+                dino.v = 13;
+            }
+        })
+        Game.on("mousedown", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        });
+        
+        Game.when("holding", "right", function () {
+            if (!s&&dino.x<innerWidth-60) {
+                dino.x+=5;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("holding", "left", function () {
+            if (!s&&dino.x>60) {
+                dino.x-=10;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        function restart() {
+            cacs[0].x = -1000;
+            cacs[1].x = -1000;
+            cacs[2].x = -1000;
+            cacs[3].x = -1000;
+            cacs[4].x = -1000;
+            cacs[5].x = -1000;
+            cacs[6].x = -1000;
+            cacs[7].x = -1000;
+            cacs[8].x = 2000;
+            cacs[9].x = -1000;
+            cacs[10].x = -1000;
+            s = 0;
+            len=1900;
+            dino.x = 60;
+            dino.y = 180+down;
+            dino.v = 10;
+            newscore = 0;
+            score = 0;
+            num1.costumeId = 0;
+            num2.costumeId = 0;
+            num3.costumeId = 0;
+            num4.costumeId = 0;
+            num5.costumeId = 0;
+            gg.x = -100, gg.y = -100;
+            re.x = -100, re.y = -100;
+            g = 0;
+            speed = 15;
+            cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
+            Game.set({
+                width: innerWidth, // Default: 640px
+                height: innerHeight, // Default: 480px
+                debugMode: true, // Default: false
+                precision: 1
+            });
+            num1.x = innerWidth + 20, num1.y = 130;
+            num2.x = innerWidth, num2.y = 130;
+            num3.x = innerWidth - 20, num3.y = 130;
+            num4.x = innerWidth - 40, num4.y = 130;
+            num5.x = innerWidth - 60, num5.y = 130;
+            hi.x = innerWidth - 360, hi.y = 92;
+            LV.x=innerWidth - 180,LV.y=130;
+        }
+
+
+    </script>
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+</body>
+
+</html>

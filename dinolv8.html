@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
+    <title>dinoLV8</title>
+
+</head>
+
+<body>
+    <canvas id="stage"></canvas>
+    <script>
+        var docCookies = {
+            getItem: function (sKey) {
+                return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+            },
+            setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+                if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+                var sExpires = "";
+                if (vEnd) {
+                    switch (vEnd.constructor) {
+                        case Number:
+                            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                            break;
+                        case String:
+                            sExpires = "; expires=" + vEnd;
+                            break;
+                        case Date:
+                            sExpires = "; expires=" + vEnd.toUTCString();
+                            break;
+                    }
+                }
+                document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+                return true;
+            },
+        };
+        var Game = Engine('stage');
+        Game.set({
+            width: innerWidth, // Default: 640px
+            height: innerHeight, // Default: 480px
+            debugMode: true, // Default: false
+            precision: 1
+        });
+        Game.preload([
+        ], function () {
+            Game.start();
+            document.getElementById('stage').focus();
+        });
+        Game.setBackdrop("asset/background.png");
+
+        var s = 0;
+        var down=200;
+
+        var realground = Game.createSprite("asset/realground.png");
+        realground.x = 0;
+        realground.y = 320+down;
+
+        var platform1 = Game.createSprite("asset/ground.png");
+        platform1.x = 0;
+        platform1.y = 300+down;
+        var platform2 = Game.createSprite("asset/ground.png");
+        platform2.x = 2400;
+        platform2.y = 300+down;
+        var platform3 = Game.createSprite("asset/ground.png");
+        platform3.x = 4800;
+        platform3.y = 300+down;
+        var dino = Game.createSprite(["asset/dino1.png", "asset/dino2.png", "asset/dino3.png", "asset/dino4.png"])
+        dino.x = 60;
+        dinoxv=0;
+        dino.y = 270+down;
+        dino.v = 10;
+        var LV= Game.createSprite("num8.png")
+        LV.x=innerWidth - 180,LV.y=130;
+        var hi = Game.createSprite("LV.png")
+        hi.x = innerWidth - 360, hi.y = 92;
+        
+        var blood= Game.createSprite("blood.png")
+        blood.scale=0.5;
+        blood.y=605;
+        blood.x=600;
+        var cover= Game.createSprite("cover.png")
+        cover.scale=0.5
+        cover.y=700
+        cover.x=280
+        var border= Game.createSprite("border.png")
+        border.scale=0.5;
+        border.x=600
+        border.y=460;
+        
+        var boss = Game.createSprite(["boss1.png", "boss2.png", "boss3.png", "boss4.png", "boss5.png", "boss6.png", "boss7.png"])
+        boss.x=innerWidth-100;
+        boss.y=350;
+        boss.scale=0.2;
+        var fireballs=[];
+        
+        setInterval(function(){
+            if(!s){
+                var fb=Game.createSprite("fireball.png");
+                fb.y=dino.y-20;
+                fb.x=dino.x+30;
+                fb.scale=0.06;
+                fireballs.push(fb);
+            }
+        },500)
+        var timecount=0,dietime=0;
+        setInterval(function(){
+            timecount+=1
+            if(!s){
+                if(!hit){
+                    if(timecount%30==2){
+                        boss.costumeId=1;
+                    }
+                    else if(timecount%30==3){
+                        boss.costumeId=2;
+                    }
+                    else if(timecount%30==4){
+                        boss.costumeId=3;
+                    }
+                    else if(timecount%30==5){
+                        boss.costumeId=2;
+                    }
+                    else if(timecount%30==6){
+                        boss.costumeId=1;
+                    }
+                    else if(timecount%30==7){
+                        boss.costumeId=0;
+                    }
+                }
+                else{
+                    boss.costumeId=6;
+                    dietime+=1;
+                }
+                if(dietime==20){
+                    hit=0;
+                    mode+=1;
+                    dietime=0;
+                    boss.costumeId=0
+                }
+            }
+        },100)
+        var cacs = [];
+        cacs[0] = Game.createSprite("bl-cac1.png");
+        cacs[0].x = -1000, cacs[0].y = 215+down;
+        cacs[1] = Game.createSprite("bl-cac2.png");
+        cacs[1].x = -1000, cacs[1].y = 215+down;
+        cacs[2] = Game.createSprite("b-cac3.png");
+        cacs[2].x = -1000, cacs[2].y = 270+down;
+        cacs[3] = Game.createSprite("sml-cac1.png");
+        cacs[3].x = -1000, cacs[3].y = 215+down;
+        cacs[4] = Game.createSprite("sm-cac2.png");
+        cacs[4].x = -1000, cacs[4].y = 270+down;
+        cacs[5] = Game.createSprite("sm-cac3.png");
+        cacs[5].x = -1000, cacs[5].y = 270+down;
+        cacs[6] = Game.createSprite("bl-cac1.png");
+        cacs[6].x = -1000, cacs[6].y = 215+down;
+        cacs[7] = Game.createSprite("bl-cac2.png");
+        cacs[7].x = -1000, cacs[7].y = 215+down;
+        cacs[8] = Game.createSprite("b-cac1.png");
+        cacs[8].x = 2000, cacs[8].y = 270+down;
+        cacs[9] = Game.createSprite("b-cac2.png");
+        cacs[9].x = -1000, cacs[9].y = 270+down;
+        cacs[10] = Game.createSprite("sm-cac3.png");
+        cacs[10].x = -1000, cacs[10].y = 270+down;
+        var cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
+
+        var flys=[];
+        var sheild=Game.createSprite("shield.png");
+        sheild.x=-200,sheild.y=-200,sheild.scale=0.4;
+        sheild.v=0,sheild.a=0.5;
+        var randlen;
+        var gg = Game.createSprite("GG.png");
+        gg.x = -100, gg.y = -100;
+        var re = Game.createSprite("reset.png");
+        re.x = -100, re.y = -100;
+        var stars=[];
+        var g = 0, speed = 0, len = 2000, s = 1,jump=0,extlen,dir=0;
+        var mode=1,hp=70,sheild_appaer=0,hit=0;
+        Game.forever(function () {
+            if(!s){
+                for(i=0;i<fireballs.length;i++){
+                    fireballs[i].x+=10;
+                    if(fireballs[i].touched(cacs)||fireballs[i].touched(stars)||fireballs[i].x>innerWidth||fireballs[i].touched(sheild)||fireballs[i].touched(flys)){
+                        fireballs[i].destroy();
+                        fireballs.splice(i,1);
+                    }
+                    else if(fireballs[i].touched(boss)){
+                        hp-=1;
+                        blood.x-=10;
+                        fireballs[i].destroy();
+                        fireballs.splice(i,1);
+                    }
+                }
+            }
+            if(hp==53&&mode==1){
+                hit=1;
+                cacs.forEach(function(e){e.opacity=0}); 
+            }
+            if(hp==35&&mode==2){
+                hit=1;
+                flys.forEach(function(e){e.destroy()}); 
+            }
+            if(hp==18&&mode==3){
+                hit=1;
+            }
+            if (!g && !s) {
+                dino.costumeId = 0; 
+                dino.v += 1.6;
+                dino.y += dino.v;
+            }
+            else if (!s) {
+                dino.y = 260+down ;
+            }
+            
+            platform3.x -= speed;
+            platform2.x -= speed;
+            platform1.x -= speed;
+            cacs.forEach(function(e){e.x-=speed});
+            if(mode==1){
+                for (var i = 0; i <11; i++) {
+                    if (cacin[i] && cacs[i].x < 1300) {
+                        cacin[i] = 0;
+                        var ran = Math.floor(Math.random() * 11);
+                        while (cacs[ran].x < 1300 && cacs[ran].x >= -100) {
+                            if (ran != 10) ran++;
+                            else ran = 0;
+                        }
+                        cacs[ran].x = (Math.floor(Math.random() * 7)) * 100 + len;
+                        cacin[ran] = 1;
+                    }
+                }
+            }
+            else if(mode==2){
+                if(!sheild_appaer){
+                    sheild.x=900,sheild.y=450,sheild.scale=0.4;
+                    sheild_appaer=1;
+                } 
+                if(!s&&!hit){
+                    if(flys.length==0||flys[flys.length-1].x<950-randlen){
+                        randlen=(Math.floor(Math.random() * 7)) * 100 + 500;
+                        var fly=Game.createSprite("b-cac1.png");
+                        fly.x=950,fly.y=300,fly.direction = 0;
+                        flys.push(fly);
+                    }
+                    flys.forEach(function(e){e.x-=10});
+                }
+            }
+            else if(mode==3&&!s){
+                if(!sheild_appaer){
+                    sheild.x=900,sheild.y=450,sheild.scale=0.4;
+                    sheild_appaer=1;
+                } 
+                if(sheild.y>=250){
+                    sheild.v-=sheild.a;
+                    sheild.y+=sheild.v;
+                } 
+                else{
+                    sheild.v+=sheild.a;
+                    sheild.y+=sheild.v;
+                }
+                if(stars.length==0||stars[stars.length-1].y>400){
+                    var star=Game.createSprite("star.png");
+                    star.x=(Math.floor(Math.random()*800))-200;
+                    star.y=-100,star.a= (Math.floor(Math.random()*10))/10+1;
+                    star.scale=((Math.floor(Math.random()*10))+25)/100;
+                    stars.push(star);
+                }
+                for(var i=0;i<stars.length;i++){
+                    stars[i].direction+=3;
+                    stars[i].x+=6,stars[i].y+=6*stars[i].a;
+                    if(stars[i].y>innerHeight){
+                        stars[i].destroy();
+                        stars.splice(i,1);
+                    }
+                }
+            }
+            if (platform1.x <= -2300) {
+                platform1.x = 4800;
+            }
+            if (platform2.x <= -2300) {
+                platform2.x = 4800;
+            }
+            if (platform3.x <= -2300) {
+                platform3.x = 4800;
+            }
+            
+            if (dino.touched(cacs)||dino.touched(boss)||dino.touched(flys)||dino.touched(sheild)||dino.touched(stars)) {
+                dino.costumeId = 3;
+                gg.x = innerWidth / 2, gg.y = 160;
+                re.x = innerWidth / 2, re.y = 230;
+                speed = 0;
+                s = 1;
+            }
+            if(!g){
+                if(dino.touched(realground)){
+                    dino.y = 260+down ;
+                    g=true;
+                    jump=0;
+                }
+            }
+        })
+       
+        
+        dino.costumeId = 1;
+        setInterval(function () {
+            if (s) {
+                dino.costumeId = 0;
+            }
+            else if (dino.costumeId == 1) {
+                dino.costumeId = 2;
+            }
+            else {
+                dino.costumeId = 1;
+            }
+        }, 90);
+        var flag = 0;
+        Game.when("keydown", "space", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "up", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "down", function () {
+            if (!g && !s) {
+                dino.v = 13;
+            }
+        })
+        Game.on("mousedown", function () {
+            if (jump<2 && !s) {
+                dino.v = -25;
+                jump+=1;
+                g=0;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                jump=2;
+                g=0;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        });
+        
+        Game.when("holding", "right", function () {
+            if (!s&&dino.x<innerWidth-60) {
+                dino.x+=5;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("holding", "left", function () {
+            if (!s&&dino.x>60) {
+                dino.x-=10;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        function restart() {
+            cacs.forEach(function(e){e.opacity=1}); 
+            cacs[0].x = -1000;
+            cacs[1].x = -1000;
+            cacs[2].x = -1000;
+            cacs[3].x = -1000;
+            cacs[4].x = -1000;
+            cacs[5].x = -1000;
+            cacs[6].x = -1000;
+            cacs[7].x = -1000;
+            cacs[8].x = 2000;
+            cacs[9].x = -1000;
+            cacs[10].x = -1000;
+            s = 0;
+            len=2000;
+            dino.x = 60;
+            dino.y = 180+down;
+            dino.v = 10;
+            newscore = 0;
+            score = 0;
+            gg.x = -100, gg.y = -100;
+            re.x = -100, re.y = -100;
+            g = 0;
+            speed = 15;
+            cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
+            Game.set({
+                width: innerWidth, // Default: 640px
+                height: innerHeight, // Default: 480px
+                debugMode: true, // Default: false
+                precision: 1
+            });
+            
+            hi.x = innerWidth - 360, hi.y = 92;
+            LV.x=innerWidth - 180,LV.y=130;
+            time=40;
+            rist=[0,0,0,0,0,0,0]
+            blood.x=600
+            fireballs.forEach(function(e){e.destroy()}) 
+            fireballs=[];
+            flys.forEach(function(e){e.destroy()}) 
+            stars.forEach(function(e){e.destroy()}) 
+            flys=[];
+            mode=3;
+            hp=70;
+            sheild_appaer=0;
+            randlen=1000;
+            timecount=0;
+            sheild.x=-200,sheild.y=-200,sheild.scale=0.4;
+            sheild.v=0,sheild.a=0.5;
+            dietime=0;
+            hit=0;
+        }
+
+
+    </script>
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+</body>
+
+</html>

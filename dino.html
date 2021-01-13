@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
+    <title>dino</title>
+
+</head>
+
+<body>
+    <canvas id="stage"></canvas>
+    <script>
+        var docCookies = {
+            getItem: function (sKey) {
+                return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+            },
+            setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+                if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+                var sExpires = "";
+                if (vEnd) {
+                    switch (vEnd.constructor) {
+                        case Number:
+                            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                            break;
+                        case String:
+                            sExpires = "; expires=" + vEnd;
+                            break;
+                        case Date:
+                            sExpires = "; expires=" + vEnd.toUTCString();
+                            break;
+                    }
+                }
+                document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+                return true;
+            },
+        };
+        var Game = Engine('stage');
+        Game.set({
+            width: innerWidth, // Default: 640px
+            height: innerHeight, // Default: 480px
+            debugMode: true, // Default: false
+            precision: 1
+        });
+        Game.preload([
+            
+        ], function () {
+            Game.start();
+            document.getElementById('stage').focus();
+        });
+        Game.setBackdrop("asset/background.png");
+
+        var s = 0;
+
+        var realground = Game.createSprite("asset/realground.png");
+        realground.x =  0;
+        realground.y = 320;
+
+        var platform1 = Game.createSprite("asset/ground.png");
+        platform1.x = 0;
+        platform1.y = 300;
+        var platform2 = Game.createSprite("asset/ground.png");
+        platform2.x = 2400;
+        platform2.y = 300;
+
+        var dino = Game.createSprite(["asset/dino1.png", "asset/dino2.png", "asset/dino3.png", "asset/dino4.png"])
+        dino.x = 60;
+        dino.y = 270;
+        dino.v = 10;
+        var num1 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num2 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num3 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num4 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var num5 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        num1.x = innerWidth + 20, num1.y = 130;
+        num2.x = innerWidth, num2.y = 130;
+        num3.x = innerWidth - 20, num3.y = 130;
+        num4.x = innerWidth - 40, num4.y = 130;
+        num5.x = innerWidth - 60, num5.y = 130;
+
+        var hi1 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var hi2 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var hi3 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var hi4 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        var hi5 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
+        hi1.x = innerWidth - 100, hi1.y = 130;
+        hi2.x = innerWidth - 120, hi2.y = 130;
+        hi3.x = innerWidth - 140, hi3.y = 130;
+        hi4.x = innerWidth - 160, hi4.y = 130;
+        hi5.x = innerWidth - 180, hi5.y = 130;
+
+        var hi = Game.createSprite("hi.png")
+        hi.x = innerWidth - 330, hi.y = 105;
+
+        var hiscore = docCookies.getItem("HI") / 1, newscore = 0, score = 0, cscore;
+        cscore = hiscore;
+        hi1.costumeId = cscore % 10;
+        cscore -= hi1.costumeId;
+        hi2.costumeId = (cscore % 100) / 10;
+        cscore -= hi2.costumeId * 10;
+        hi3.costumeId = (cscore % 1000) / 100;
+        cscore -= hi3.costumeId * 100;
+        hi4.costumeId = (cscore % 10000) / 1000;
+        cscore -= hi4.costumeId * 1000;
+        hi5.costumeId = cscore / 10000;
+        setInterval(function () {
+            if (!s) {
+                score += 1;
+                cscore = score;
+                num1.costumeId = cscore % 10;
+                cscore -= num1.costumeId;
+                num2.costumeId = (cscore % 100) / 10;
+                cscore -= num2.costumeId * 10;
+                num3.costumeId = (cscore % 1000) / 100;
+                cscore -= num3.costumeId * 100;
+                num4.costumeId = (cscore % 10000) / 1000;
+                cscore -= num4.costumeId * 1000;
+                num5.costumeId = cscore / 10000;
+            }
+        }, 100);
+
+        var cacs = [];
+        cacs[0] = Game.createSprite("b-cac1.png");
+        cacs[0].x = 2000, cacs[0].y = 270;
+        cacs[1] = Game.createSprite("b-cac2.png");
+        cacs[1].x = -1000, cacs[1].y = 270;
+        cacs[2] = Game.createSprite("b-cac3.png");
+        cacs[2].x = -1000, cacs[2].y = 270;
+        cacs[3] = Game.createSprite("sm-cac1.png");
+        cacs[3].x = -1000, cacs[3].y = 270;
+        cacs[4] = Game.createSprite("sm-cac2.png");
+        cacs[4].x = -1000, cacs[4].y = 270;
+        cacs[5] = Game.createSprite("sm-cac3.png");
+        cacs[5].x = -1000, cacs[5].y = 270;
+        var cacin = [1, 0, 0, 0, 0, 0];
+        var gg = Game.createSprite("GG.png");
+        gg.x = -100, gg.y = -100;
+        var re = Game.createSprite("reset.png");
+        re.x = -100, re.y = -100;
+
+        var g = 0, speed = 15, len = 1900, s = 1;
+
+        Game.forever(function () {
+            if (!g && !s) {
+                dino.costumeId = 0;
+                dino.v += 1.6;
+                dino.y += dino.v;
+            }
+            else if (!s) {
+                dino.y = 260;
+            }
+            if (score == 100) speed = 16;
+            else if (score == 200) speed = 17;
+            else if (score == 300) speed = 18;
+            else if (score == 500) speed = 19;
+            else if (score == 600) speed = 20;
+            else if (score == 700) speed = 21;
+            else if (score == 800) speed = 22, len = 2000;
+            else if (score == 1000) speed = 23, len = 2000;
+            else if (score == 1100) speed = 24, len = 2000;
+            else if (score == 1200) speed = 25, len = 2000;
+            else if (score == 1300) speed = 26, len = 2000;
+            else if (score == 1400) speed = 27, len = 2000;
+            platform2.x -= speed;
+            platform1.x -= speed;
+            for (var i = 0; i < 6; i++) {
+                cacs[i].x -= speed;
+                if (cacin[i] && cacs[i].x < 1300) {
+                    cacin[i] = 0;
+                    var ran = Math.floor(Math.random() * 5);
+                    while (cacs[ran].x < 1300 && cacs[ran].x >= 0) {
+                        if (ran != 5) ran++;
+                        else ran = 0;
+                    }
+
+                    cacs[ran].x = (Math.floor(Math.random() * 7)) * 100 + len;
+                    cacin[ran] = 1;
+                }
+            }
+            if (platform1.x <= -2300) {
+                platform1.x = 2400;
+            }
+            if (platform2.x <= -2300) {
+                platform2.x = 2400;
+            }
+            if (dino.touched(cacs)) {
+                dino.costumeId = 3;
+                gg.x = innerWidth / 2, gg.y = 160;
+                re.x = innerWidth / 2, re.y = 230;
+                newscore = num1.costumeId + num2.costumeId * 10 + num3.costumeId * 100 + num4.costumeId * 1000 + num5.costumeId * 10000
+                if (hiscore < newscore) {
+                    hiscore = newscore;
+                    hi1.costumeId = newscore % 10;
+                    newscore -= hi1.costumeId;
+                    hi2.costumeId = (newscore % 100) / 10;
+                    newscore -= hi2.costumeId * 10;
+                    hi3.costumeId = (newscore % 1000) / 100;
+                    newscore -= hi3.costumeId * 100;
+                    hi4.costumeId = (newscore % 10000) / 1000;
+                    newscore -= hi4.costumeId * 1000;
+                    hi5.costumeId = newscore / 10000;
+                    docCookies.setItem("HI", hiscore);
+                }
+                speed = 0;
+                s = 1;
+                ccacin = [1, 0, 0, 0, 0, 0];
+            }
+        })
+        dino.when("touch", realground, function () {
+            g = true;
+        })
+        dino.costumeId = 1;
+        setInterval(function () {
+            if (s) {
+                dino.costumeId = 0;
+            }
+            else if (dino.costumeId == 1) {
+                dino.costumeId = 2;
+            }
+            else {
+                dino.costumeId = 1;
+            }
+        }, 90);
+        var flag = 0;
+        Game.when("keydown", "space", function () {
+            if (g && !s) {
+                dino.v = -25;
+                g = false;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                g = false;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "up", function () {
+            if (g && !s) {
+                dino.v = -25;
+                g = false;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                g = false;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        })
+        Game.when("keydown", "down", function () {
+            if (!g && !s) {
+                dino.v = 13;
+            }
+        })
+        Game.on("mousedown", function () {
+            if (g && !s) {
+                dino.v = -25;
+                g = false;
+            }
+            else if (flag) {
+                flag = 0;
+                restart();
+                dino.v = -20;
+                g = false;
+            }
+            else if (s) {
+                flag = 1;
+            }
+        });
+        function restart() {
+            cacs[0].x = 2000, cacs[0].y = 270;
+            cacs[1].x = -1000, cacs[1].y = 270;
+            cacs[2].x = -1000, cacs[1].y = 270;
+            cacs[3].x = -1000, cacs[1].y = 270;
+            cacs[4].x = -1000, cacs[1].y = 270;
+            cacs[5].x = -1000, cacs[1].y = 270;
+            s = 0;
+            dino.x = 60;
+            dino.y = 180;
+            dino.v = 10;
+            newscore = 0;
+            score = 0;
+            num1.costumeId = 0;
+            num2.costumeId = 0;
+            num3.costumeId = 0;
+            num4.costumeId = 0;
+            num5.costumeId = 0;
+            gg.x = -100, gg.y = -100;
+            re.x = -100, re.y = -100;
+            g = 0;
+            speed = 15;
+            len = 1900;
+            cacin = [1, 0, 0, 0, 0, 0];
+            Game.set({
+                width: innerWidth, // Default: 640px
+                height: innerHeight, // Default: 480px
+                debugMode: true, // Default: false
+                precision: 1
+            });
+            num1.x = innerWidth + 20, num1.y = 130;
+            num2.x = innerWidth, num2.y = 130;
+            num3.x = innerWidth - 20, num3.y = 130;
+            num4.x = innerWidth - 40, num4.y = 130;
+            num5.x = innerWidth - 60, num5.y = 130;
+            hi1.x = innerWidth - 100, hi1.y = 130;
+            hi2.x = innerWidth - 120, hi2.y = 130;
+            hi3.x = innerWidth - 140, hi3.y = 130;
+            hi4.x = innerWidth - 160, hi4.y = 130;
+            hi5.x = innerWidth - 180, hi5.y = 130;
+            hi.x = innerWidth - 330, hi.y = 105;
+        }
+
+
+    </script>
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+</body>
+
+</html>
