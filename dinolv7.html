@@ -2,12 +2,23 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <link rel="stylesheet" href="css.css">
     <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
     <title>dinoLV7</title>
 
 </head>
 
 <body>
+    <div id="arr" onclick="window.location='index.html';">
+        <i class="fa fa-angle-left" data-fa-transform="grow-25"></i>
+    </div>
     <canvas id="stage"></canvas>
     <script>
         var docCookies = {
@@ -226,8 +237,9 @@
         fly[5].x=innerWidth+100,fly[5].y=280,fly[5].direction = 0;
         fly[6]=Game.createSprite("b-cac1.png");
         fly[6].x=innerWidth+100,fly[6].y=420,fly[6].direction = 0;
-
-        var g = 0, speed = 0, len = 2000, s = 1,jump=0,extlen,dir=0;
+        var winui = Game.createSprite("win.png")
+        winui.x=-100,winui.y=-100;
+        var g = 0, speed = 0, len = 2000, s = 1,jump=0,extlen,dir=0,win=0;
 
         Game.forever(function () {
             if(!s){
@@ -246,11 +258,15 @@
             if (score == 110&&!s) speed = 16,time=30;
             else if (score == 200&&!s) speed = 17,mode=2;
             else if (score == 450&&!s) mode=3;
-            else if (score == 500&&!s) ;
+            else if (score == 500&&!s) win=1;
             platform3.x -= speed;
             platform2.x -= speed;
             platform1.x -= speed;
-           
+            if(win){
+                speed = 0;
+                s = 1;
+                winui.x = innerWidth / 2, winui.y = 230;
+            }
             for (var i = 0; i <11; i++) {
                 cacs[i].x -= speed;
                 if (cacin[i] && cacs[i].x < 1300) {
@@ -345,7 +361,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -362,7 +378,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -384,7 +400,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;

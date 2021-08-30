@@ -2,12 +2,23 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <link rel="stylesheet" href="css.css">
     <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
     <title>dinoLV8</title>
 
 </head>
 
 <body>
+    <div id="arr" onclick="window.location='index.html';">
+        <i class="fa fa-angle-left" data-fa-transform="grow-25"></i>
+    </div>
     <canvas id="stage"></canvas>
     <script>
         var docCookies = {
@@ -73,7 +84,7 @@
         LV.x=innerWidth - 180,LV.y=130;
         var hi = Game.createSprite("LV.png")
         hi.x = innerWidth - 360, hi.y = 92;
-        
+
         var blood= Game.createSprite("blood.png")
         blood.scale=0.5;
         blood.y=605;
@@ -174,7 +185,11 @@
         re.x = -100, re.y = -100;
         var stars=[];
         var g = 0, speed = 0, len = 2000, s = 1,jump=0,extlen,dir=0;
-        var mode=1,hp=70,sheild_appaer=0,hit=0;
+        var mode=1,hp=60,sheild_appaer=0,hit=0,win=0;
+        
+        var winui = Game.createSprite("win.png")
+        winui.x=-100,winui.y=-100;
+
         Game.forever(function () {
             if(!s){
                 for(i=0;i<fireballs.length;i++){
@@ -185,22 +200,25 @@
                     }
                     else if(fireballs[i].touched(boss)){
                         hp-=1;
-                        blood.x-=10;
+                        blood.x-=15.5;
                         fireballs[i].destroy();
                         fireballs.splice(i,1);
                     }
                 }
             }
-            if(hp==53&&mode==1){
+            if(hp==30&&mode==1){
                 hit=1;
                 cacs.forEach(function(e){e.opacity=0}); 
             }
-            if(hp==35&&mode==2){
+            if(hp==15&&mode==2){
                 hit=1;
                 flys.forEach(function(e){e.destroy()}); 
             }
-            if(hp==18&&mode==3){
-                hit=1;
+            if(hp==-1&&mode==3){
+                stars.forEach(function(e){e.destroy()}); 
+                boss.costumeId=6;
+                sheild.destroy();
+                win=1;
             }
             if (!g && !s) {
                 dino.costumeId = 0; 
@@ -282,7 +300,11 @@
             if (platform3.x <= -2300) {
                 platform3.x = 4800;
             }
-            
+            if(win){
+                speed = 0;
+                s = 1;
+                winui.x = innerWidth / 2, winui.y = 230;
+            }
             if (dino.touched(cacs)||dino.touched(boss)||dino.touched(flys)||dino.touched(sheild)||dino.touched(stars)) {
                 dino.costumeId = 3;
                 gg.x = innerWidth / 2, gg.y = 160;
@@ -319,7 +341,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -336,7 +358,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -358,7 +380,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -428,8 +450,8 @@
             flys.forEach(function(e){e.destroy()}) 
             stars.forEach(function(e){e.destroy()}) 
             flys=[];
-            mode=3;
-            hp=70;
+            mode=1;
+            hp=45;
             sheild_appaer=0;
             randlen=1000;
             timecount=0;

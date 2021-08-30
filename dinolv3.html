@@ -2,12 +2,23 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <link rel="stylesheet" href="css.css">
     <script src="https://orangeappletw.github.io/engine.js/engine-min.js"></script>
     <title>dinoLV3</title>
 
 </head>
 
 <body>
+    <div id="arr" onclick="window.location='index.html';">
+        <i class="fa fa-angle-left" data-fa-transform="grow-25"></i>
+    </div>
     <canvas id="stage"></canvas>
     <script>
         var docCookies = {
@@ -132,9 +143,10 @@
         gg.x = -100, gg.y = -100;
         var re = Game.createSprite("reset.png");
         re.x = -100, re.y = -100;
- 
+        var winui = Game.createSprite("win.png")
+        winui.x=-100,winui.y=-100; 
 
-        var g = 0, speed = 0, len = 1900, s = 1,jump=0;
+        var g = 0, speed = 0, len = 1900, s = 1,jump=0,win=0;
 
         Game.forever(function () {
             if (!g && !s) {
@@ -153,7 +165,12 @@
             else if (score == 350&&!s) speed = 21,len=2000;
             else if (score == 400&&!s) speed = 22,len=2100;
             else if (score == 450&&!s) speed = 23,len=2100;
-            else if (score == 500&&!s) ;
+            else if (score == 500&&!s) win=1;
+            if(win){
+                speed = 0;
+                s = 1;
+                winui.x = innerWidth / 2, winui.y = 230;
+            }
             platform3.x -= speed;
             platform2.x -= speed;
             platform1.x -= speed;
@@ -216,7 +233,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -233,7 +250,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;
@@ -255,7 +272,7 @@
                 jump+=1;
                 g=0;
             }
-            else if (flag) {
+            else if (flag&&!win) {
                 flag = 0;
                 restart();
                 dino.v = -20;

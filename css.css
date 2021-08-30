@@ -1,0 +1,55 @@
+
+body{
+    background-color: #f1f1f1;
+}
+body *{
+    font-family: Arial,sans-serif,"Microsoft JhengHei";
+}
+#arr{
+    top: 20px;
+    width: 80px;
+    height: 40px;
+    position: fixed;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+}
+#arr2{
+    top: 90px;
+    width: 80px;
+    height: 40px;
+    position: fixed;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+}
+header{
+
+    margin-top: 5%;
+    font-size: 60px;
+    font-weight: 400;
+    text-align: center;
+}
+.but,#but {
+    position: relative;
+    background-color: white;
+    color: black !important;
+    font-size: 16px;
+    margin: 4px 4px;
+    padding: 2px 2px;
+    transform: translateX(-50%);
+    left: 32%;
+    outline: 0px !important;
+    border: 2px solid #008CBA;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.but:hover {
+    background-color: #008CBA;
+    color: white;
+}
+.but{
+    height: 100px;
+    width: 140px;
+}
