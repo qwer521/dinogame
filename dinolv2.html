@@ -211,7 +211,7 @@
             if(win){
                 speed = 0;
                 s = 1;
-                winui.x = innerWidth / 2, winui.y = 230;
+                winui.x = Math.min(innerWidth,1100) / 2, winui.y = 230;
             }
             for (var i = 0; i < 6; i++) {
                 cacs[i].x -= speed;
@@ -263,8 +263,8 @@
             if (dino.touched(cacs)||dinoc.touched(cacsc)) {
                 dino.costumeId = 3;
                 dinoc.costumeId = 3;
-                gg.x = innerWidth / 2, gg.y = 160;
-                re.x = innerWidth / 2, re.y = 230;
+                gg.x = Math.min(innerWidth,1100) / 2, gg.y = 160;
+                re.x = Math.min(innerWidth,1100) / 2, re.y = 230;
                 speed = 0;
                 s = 1;
             }
