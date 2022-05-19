@@ -47,7 +47,7 @@
         };
         var Game = Engine('stage');
         Game.set({
-            width: Math.min(innerWidth,1100), // Default: 640px
+            width: Math.min(innerWidth,1250), // Default: 640px
             height: innerHeight, // Default: 480px
             debugMode: true, // Default: false
             precision: 1
@@ -81,9 +81,9 @@
         dino.y = 270+down;
         dino.v = 10;
         var LV= Game.createSprite("num8.png")
-        LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
+        LV.x=Math.min(innerWidth,1250) - 180,LV.y=130;
         var hi = Game.createSprite("LV.png")
-        hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
+        hi.x = Math.min(innerWidth,1250) - 360, hi.y = 92;
 
         var blood= Game.createSprite("blood.png")
         blood.scale=0.5;
@@ -99,7 +99,7 @@
         border.y=460;
         
         var boss = Game.createSprite(["boss1.png", "boss2.png", "boss3.png", "boss4.png", "boss5.png", "boss6.png", "boss7.png"])
-        boss.x=Math.min(innerWidth,1100)-100;
+        boss.x=Math.min(innerWidth,1250)-100;
         boss.y=350;
         boss.scale=0.2;
         var fireballs=[];
@@ -194,7 +194,7 @@
             if(!s){
                 for(i=0;i<fireballs.length;i++){
                     fireballs[i].x+=10;
-                    if(fireballs[i].touched(cacs)||fireballs[i].touched(stars)||fireballs[i].x>Math.min(innerWidth,1100)||fireballs[i].touched(sheild)||fireballs[i].touched(flys)){
+                    if(fireballs[i].touched(cacs)||fireballs[i].touched(stars)||fireballs[i].x>Math.min(innerWidth,1250)||fireballs[i].touched(sheild)||fireballs[i].touched(flys)){
                         fireballs[i].destroy();
                         fireballs.splice(i,1);
                     }
@@ -303,12 +303,12 @@
             if(win){
                 speed = 0;
                 s = 1;
-                winui.x = Math.min(innerWidth,1100) / 2, winui.y = 230;
+                winui.x = Math.min(innerWidth,1250) / 2, winui.y = 230;
             }
             if (dino.touched(cacs)||dino.touched(boss)||dino.touched(flys)||dino.touched(sheild)||dino.touched(stars)) {
                 dino.costumeId = 3;
-                gg.x = Math.min(innerWidth,1100) / 2, gg.y = 160;
-                re.x = Math.min(innerWidth,1100) / 2, re.y = 230;
+                gg.x = Math.min(innerWidth,1250) / 2, gg.y = 160;
+                re.x = Math.min(innerWidth,1250) / 2, re.y = 230;
                 speed = 0;
                 s = 1;
             }
@@ -393,7 +393,7 @@
         });
         
         Game.when("holding", "right", function () {
-            if (!s&&dino.x<Math.min(innerWidth,1100)-60) {
+            if (!s&&dino.x<Math.min(innerWidth,1250)-60) {
                 dino.x+=5;
             }
             else if (s) {
@@ -434,14 +434,14 @@
             speed = 15;
             cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
             Game.set({
-                width: Math.min(innerWidth,1100), // Default: 640px
+                width: Math.min(innerWidth,1250), // Default: 640px
                 height: innerHeight, // Default: 480px
                 debugMode: true, // Default: false
                 precision: 1
             });
             
-            hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
-            LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
+            hi.x = Math.min(innerWidth,1250) - 360, hi.y = 92;
+            LV.x=Math.min(innerWidth,1250) - 180,LV.y=130;
             time=40;
             rist=[0,0,0,0,0,0,0]
             blood.x=600
@@ -466,8 +466,10 @@
     <style>
         canvas {
             position: absolute;
+            left: 50%;
+            margin: 0 0 0 -625px;
             top: 0px;
-            left: 0px;
+            z-index: -1;
         }
     </style>
 

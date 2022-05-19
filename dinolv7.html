@@ -47,7 +47,7 @@
         };
         var Game = Engine('stage');
         Game.set({
-            width: Math.min(innerWidth,1100), // Default: 640px
+            width: Math.min(innerWidth,1250), // Default: 640px
             height: innerHeight, // Default: 480px
             debugMode: true, // Default: false
             precision: 1
@@ -85,15 +85,15 @@
         var num3 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
         var num4 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
         var num5 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
-        num1.x = Math.min(innerWidth,1100) + 20, num1.y = 130;
-        num2.x = Math.min(innerWidth,1100), num2.y = 130;
-        num3.x = Math.min(innerWidth,1100) - 20, num3.y = 130;
-        num4.x = Math.min(innerWidth,1100) - 40, num4.y = 130;
-        num5.x = Math.min(innerWidth,1100) - 60, num5.y = 130;
+        num1.x = Math.min(innerWidth,1250) + 20, num1.y = 130;
+        num2.x = Math.min(innerWidth,1250), num2.y = 130;
+        num3.x = Math.min(innerWidth,1250) - 20, num3.y = 130;
+        num4.x = Math.min(innerWidth,1250) - 40, num4.y = 130;
+        num5.x = Math.min(innerWidth,1250) - 60, num5.y = 130;
         var LV= Game.createSprite("num7.png")
-        LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
+        LV.x=Math.min(innerWidth,1250) - 180,LV.y=130;
         var hi = Game.createSprite("LV.png")
-        hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
+        hi.x = Math.min(innerWidth,1250) - 360, hi.y = 92;
         
         
 
@@ -234,9 +234,9 @@
         fly[4]=Game.createSprite("b-cac1.png");
         fly[4].x=900,fly[4].y=-100,fly[4].direction = -90;
         fly[5]=Game.createSprite("b-cac1.png");
-        fly[5].x=Math.min(innerWidth,1100)+100,fly[5].y=280,fly[5].direction = 0;
+        fly[5].x=Math.min(innerWidth,1250)+100,fly[5].y=280,fly[5].direction = 0;
         fly[6]=Game.createSprite("b-cac1.png");
-        fly[6].x=Math.min(innerWidth,1100)+100,fly[6].y=420,fly[6].direction = 0;
+        fly[6].x=Math.min(innerWidth,1250)+100,fly[6].y=420,fly[6].direction = 0;
         var winui = Game.createSprite("win.png")
         winui.x=-100,winui.y=-100;
         var g = 0, speed = 0, len = 2000, s = 1,jump=0,extlen,dir=0,win=0;
@@ -265,7 +265,7 @@
             if(win){
                 speed = 0;
                 s = 1;
-                winui.x = Math.min(innerWidth,1100) / 2, winui.y = 230;
+                winui.x = Math.min(innerWidth,1250) / 2, winui.y = 230;
             }
             for (var i = 0; i <11; i++) {
                 cacs[i].x -= speed;
@@ -298,15 +298,15 @@
             
             if (dino.touched(cacs)) {
                 dino.costumeId = 3;
-                gg.x = Math.min(innerWidth,1100) / 2, gg.y = 160;
-                re.x = Math.min(innerWidth,1100) / 2, re.y = 230;
+                gg.x = Math.min(innerWidth,1250) / 2, gg.y = 160;
+                re.x = Math.min(innerWidth,1250) / 2, re.y = 230;
                 speed = 0;
                 s = 1;
             }
             if (dino.touched(fly)) {
                 dino.costumeId = 3;
-                gg.x = Math.min(innerWidth,1100) / 2, gg.y = 160;
-                re.x = Math.min(innerWidth,1100) / 2, re.y = 230;
+                gg.x = Math.min(innerWidth,1250) / 2, gg.y = 160;
+                re.x = Math.min(innerWidth,1250) / 2, re.y = 230;
                 speed = 0;
                 s = 1;
             }
@@ -328,12 +328,12 @@
                 }
                 for(i=5;i<7;i++){
                     if(rist[i]){
-                        if(fly[i].x==Math.min(innerWidth,1100)+100){
+                        if(fly[i].x==Math.min(innerWidth,1250)+100){
                             fly[i].x=1300;
                         }
                         if(fly[i].x<-100){
                             rist[i]=0
-                            fly[i].x=Math.min(innerWidth,1100)+100;
+                            fly[i].x=Math.min(innerWidth,1250)+100;
                         }
                         fly[i].x-=30
                     }
@@ -413,7 +413,7 @@
         });
         
         Game.when("holding", "right", function () {
-            if (!s&&dino.x<Math.min(innerWidth,1100)-60) {
+            if (!s&&dino.x<Math.min(innerWidth,1250)-60) {
                 dino.x+=5;
             }
             else if (s) {
@@ -458,18 +458,18 @@
             speed = 15;
             cacin = [0, 0, 0, 0, 0, 0,0,0,1,0,0];
             Game.set({
-                width: Math.min(innerWidth,1100), // Default: 640px
+                width: Math.min(innerWidth,1250), // Default: 640px
                 height: innerHeight, // Default: 480px
                 debugMode: true, // Default: false
                 precision: 1
             });
-            num1.x = Math.min(innerWidth,1100) + 20, num1.y = 130;
-            num2.x = Math.min(innerWidth,1100), num2.y = 130;
-            num3.x = Math.min(innerWidth,1100) - 20, num3.y = 130;
-            num4.x = Math.min(innerWidth,1100) - 40, num4.y = 130;
-            num5.x = Math.min(innerWidth,1100) - 60, num5.y = 130;
-            hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
-            LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
+            num1.x = Math.min(innerWidth,1250) + 20, num1.y = 130;
+            num2.x = Math.min(innerWidth,1250), num2.y = 130;
+            num3.x = Math.min(innerWidth,1250) - 20, num3.y = 130;
+            num4.x = Math.min(innerWidth,1250) - 40, num4.y = 130;
+            num5.x = Math.min(innerWidth,1250) - 60, num5.y = 130;
+            hi.x = Math.min(innerWidth,1250) - 360, hi.y = 92;
+            LV.x=Math.min(innerWidth,1250) - 180,LV.y=130;
             mode=1;
             time=40;
             ale.forEach(e => {
@@ -480,8 +480,8 @@
             fly[2].y=-100
             fly[3].y=-100
             fly[4].y=-100
-            fly[5].x=Math.min(innerWidth,1100)+100
-            fly[6].x=Math.min(innerWidth,1100)+100
+            fly[5].x=Math.min(innerWidth,1250)+100
+            fly[6].x=Math.min(innerWidth,1250)+100
             rist=[0,0,0,0,0,0,0]
         }
 
@@ -490,8 +490,10 @@
     <style>
         canvas {
             position: absolute;
+            left: 50%;
+            margin: 0 0 0 -625px;
             top: 0px;
-            left: 0px;
+            z-index: -1;
         }
     </style>
 
