@@ -46,8 +46,8 @@
         };
         var Game = Engine('stage');
         Game.set({
-            width: innerWidth, // Default: 640px
-            height: innerHeight, // Default: 480px
+            width: 1250, // Default: 640px
+            height: 1000, // Default: 480px
             debugMode: true, // Default: false
             precision: 1
         });
@@ -138,6 +138,7 @@
         var g = 0, speed = 0, len = 1900, s = 1,win=0;
 
         Game.forever(function () {
+            myWindow.resizeTo(1250, 1000);
             if (!g && !s) {
                 dino.costumeId = 0;
                 dino.v += 1.6;
@@ -288,8 +289,8 @@
             speed = 15;
             cacin = [1, 0, 0, 0, 0, 0];
             Game.set({
-                width: innerWidth, // Default: 640px
-                height: innerHeight, // Default: 480px
+                width: 1250, // Default: 640px
+                height: 1000, // Default: 480px
                 debugMode: true, // Default: false
                 precision: 1
             });
