@@ -46,7 +46,7 @@
         };
         var Game = Engine('stage');
         Game.set({
-            width: innerWidth, // Default: 640px
+            width: Math.min(innerWidth,1100), // Default: 640px
             height: innerHeight, // Default: 480px
             debugMode: true, // Default: false
             precision: 1
@@ -82,17 +82,17 @@
         var num3 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
         var num4 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
         var num5 = Game.createSprite(["num0.png", "num1.png", "num2.png", "num3.png", "num4.png", "num5.png", "num6.png", "num7.png", "num8.png", "num9.png"]);
-        num1.x = innerWidth + 20, num1.y = 130;
-        num2.x = innerWidth, num2.y = 130;
-        num3.x = innerWidth - 20, num3.y = 130;
-        num4.x = innerWidth - 40, num4.y = 130;
-        num5.x = innerWidth - 60, num5.y = 130;
+        num1.x = Math.min(innerWidth,1100) + 20, num1.y = 130;
+        num2.x = Math.min(innerWidth,1100), num2.y = 130;
+        num3.x = Math.min(innerWidth,1100) - 20, num3.y = 130;
+        num4.x = Math.min(innerWidth,1100) - 40, num4.y = 130;
+        num5.x = Math.min(innerWidth,1100) - 60, num5.y = 130;
 
       
         var LV= Game.createSprite("num1.png")
-        LV.x=innerWidth - 180,LV.y=130;
+        LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
         var hi = Game.createSprite("LV.png")
-        hi.x = innerWidth - 360, hi.y = 92;
+        hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
 
         var score;
         setInterval(function () {
@@ -162,7 +162,7 @@
             if(win){
                 speed = 0;
                 s = 1;
-                winui.x = innerWidth / 2, winui.y = 230;
+                winui.x = Math.min(innerWidth,1100) / 2, winui.y = 230;
             }
             for (var i = 0; i < 6; i++) {
                 cacs[i].x -= speed;
@@ -190,8 +190,8 @@
             
             if (dino.touched(cacs)) {
                 dino.costumeId = 3;
-                gg.x = innerWidth / 2, gg.y = 160;
-                re.x = innerWidth / 2, re.y = 230;
+                gg.x = Math.min(innerWidth,1100) / 2, gg.y = 160;
+                re.x = Math.min(innerWidth,1100) / 2, re.y = 230;
                 speed = 0;
                 s = 1;
             }
@@ -289,19 +289,19 @@
             speed = 15;
             cacin = [1, 0, 0, 0, 0, 0];
             Game.set({
-                width: innerWidth, // Default: 640px
+                width: Math.min(innerWidth,1100), // Default: 640px
                 height: innerHeight, // Default: 480px
                 debugMode: true, // Default: false
                 precision: 1
             });
-            num1.x = innerWidth + 20, num1.y = 130;
-            num2.x = innerWidth, num2.y = 130;
-            num3.x = innerWidth - 20, num3.y = 130;
-            num4.x = innerWidth - 40, num4.y = 130;
-            num5.x = innerWidth - 60, num5.y = 130;
-            hi.x = innerWidth - 360, hi.y = 92;
-            LV.x=innerWidth - 180,LV.y=130;
-            LV.x=innerWidth - 180,LV.y=130;
+            num1.x = Math.min(innerWidth,1100) + 20, num1.y = 130;
+            num2.x = Math.min(innerWidth,1100), num2.y = 130;
+            num3.x = Math.min(innerWidth,1100) - 20, num3.y = 130;
+            num4.x = Math.min(innerWidth,1100) - 40, num4.y = 130;
+            num5.x = Math.min(innerWidth,1100) - 60, num5.y = 130;
+            hi.x = Math.min(innerWidth,1100) - 360, hi.y = 92;
+            LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
+            LV.x=Math.min(innerWidth,1100) - 180,LV.y=130;
         }
 
 
